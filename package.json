@@ -1,6 +1,7 @@
 {
   "name": "pcat",
   "version": "1.0.0",
+  "type": "module",
   "description": "PCAT Photo App",
   "main": "app.js",
   "scripts": {
@@ -22,6 +23,10 @@
   },
   "homepage": "https://github.com/yusufkeremsahan/PCAT#readme",
   "devDependencies": {
+    "nodemon": "^3.1.10",
     "prettier": "3.6.2"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
   }
 }

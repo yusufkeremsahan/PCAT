@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { urlencoded } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import ejs from 'ejs';
@@ -16,6 +16,8 @@ const app = express();
 app.set("view engine","ejs");
 
 app.use(express.static('public'));
+app.use(express.urlencoded({extended:true}))
+app.use(express.json())
 
 app.listen(port, () =>{
     console.log(`Sunucu ${port} portunda çalışıyor..`);
@@ -30,6 +32,10 @@ app.get('/about', (req, res)=>{
     res.render('about');
 })
 app.get('/add', (req, res)=>{
-    //res.sendFile(path.resolve(__dirname ,"temp/index.html"));
     res.render('add');
+})
+
+app.post('/photos', (req,res)=>{
+    console.log(req.body);
+    return res.redirect('/');
 })

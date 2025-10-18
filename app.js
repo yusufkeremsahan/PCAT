@@ -43,4 +43,9 @@ app.get('/add', (req, res)=>{
     res.render('add');
 })
 
-
+app.get('/photos/:id', async (req, res) => {
+    const photo = await Photo.findById(req.params.id);
+    res.render('photo', {
+        photo
+    });
+});

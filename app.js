@@ -2,7 +2,7 @@ import express, { urlencoded } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import ejs from 'ejs';
-import Photo from'./models/Photo.js'; 
+import Photo from './models/Photo.js';
 import mongoose from 'mongoose';
 import fileUpload from 'express-fileupload';
 import fs from 'fs';
@@ -10,7 +10,7 @@ import methodOverride from 'method-override';
 
 const uploadDir = 'public/uploads';
 
-if(!fs.existsSync(uploadDir)){
+if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
 
@@ -23,28 +23,30 @@ const app = express();
 mongoose.connect('mongodb://localhost/pcat-test-db');
 
 //Template Engine
-app.set("view engine","ejs");
+app.set("view engine", "ejs");
 
 //MIDDLEWARES
 app.use(express.static('public'));
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(fileUpload());
-app.use(methodOverride('_method'));
+app.use(methodOverride('_method', {
+    methods: ['POST', 'GET']
+}));
 
-app.listen(port, () =>{
+app.listen(port, () => {
     console.log(`Sunucu ${port} portunda çalışıyor..`);
 })
 
 
-app.post('/photos', async (req,res)=>{
+app.post('/photos', async (req, res) => {
     //console.log(req.files.image);
     //Photo.create(req.body);
     //return res.redirect('/');
 
-    let uploadImage= req.files.image;
+    let uploadImage = req.files.image;
     let uploadPath = __dirname + '/public/uploads/' + uploadImage.name;
-    uploadImage.mv(uploadPath,async () =>{
+    uploadImage.mv(uploadPath, async () => {
         await Photo.create({
             ...req.body,
             image: '/uploads/' + uploadImage.name
@@ -54,15 +56,15 @@ app.post('/photos', async (req,res)=>{
     )
 })
 
-app.get('/', async (req, res)=>{
+app.get('/', async (req, res) => {
     const photos = await Photo.find({}).sort('-dateCreated');
-    res.render('index', {photos});
+    res.render('index', { photos });
 })
 
-app.get('/about', (req, res)=>{
+app.get('/about', (req, res) => {
     res.render('about');
 })
-app.get('/add', (req, res)=>{
+app.get('/add', (req, res) => {
     res.render('add');
 })
 
@@ -73,7 +75,7 @@ app.get('/photos/:id', async (req, res) => {
     });
 });
 
-app.get('/photos/edit/:id', async (req,res) =>{
+app.get('/photos/edit/:id', async (req, res) => {
     const photo = await Photo.findById(req.params.id);
     res.render('edit', {
         photo
@@ -81,11 +83,20 @@ app.get('/photos/edit/:id', async (req,res) =>{
 })
 
 
-app.put('/photos/:id', async(req, res) =>{
+app.put('/photos/:id', async (req, res) => {
     const photo = await Photo.findById(req.params.id);
     photo.title = req.body.title;
     photo.description = req.body.description;
     photo.save();
     res.redirect(`/photos/${req.params.id}`);
 
+})
+
+app.delete('/photos/:id', async (req, res) => {
+    //console.log(req.params.id);
+    const photo = await Photo.findById(req.params.id);
+    let deletedImage = __dirname + '/public' + photo.image;
+    fs.unlinkSync(deletedImage);
+    await Photo.deleteOne(photo);
+    res.redirect('/')
 })

@@ -6,6 +6,7 @@ import Photo from'./models/Photo.js';
 import mongoose from 'mongoose';
 import fileUpload from 'express-fileupload';
 import fs from 'fs';
+import methodOverride from 'method-override';
 
 const uploadDir = 'public/uploads';
 
@@ -29,6 +30,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(fileUpload());
+app.use(methodOverride('_method'));
 
 app.listen(port, () =>{
     console.log(`Sunucu ${port} portunda çalışıyor..`);
@@ -70,3 +72,20 @@ app.get('/photos/:id', async (req, res) => {
         photo
     });
 });
+
+app.get('/photos/edit/:id', async (req,res) =>{
+    const photo = await Photo.findById(req.params.id);
+    res.render('edit', {
+        photo
+    });
+})
+
+
+app.put('/photos/:id', async(req, res) =>{
+    const photo = await Photo.findById(req.params.id);
+    photo.title = req.body.title;
+    photo.description = req.body.description;
+    photo.save();
+    res.redirect(`/photos/${req.params.id}`);
+
+})

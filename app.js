@@ -7,7 +7,7 @@ import methodOverride from 'method-override';
 import photoController from './controllers/photoControllers.js'; 
 import pageController from './controllers/pageControllers.js';
 
-const DB_URI = process.env.MONGODB_URI || 'mongodb://localhost/pcat-test-db';
+const DB_URI = process.env.MONGODB_URL || 'mongodb://localhost/pcat-test-db';
 const uploadDir = 'public/uploads';
 
 if (!fs.existsSync(uploadDir)) {

@@ -7,17 +7,22 @@ import methodOverride from 'method-override';
 import photoController from './controllers/photoControllers.js'; 
 import pageController from './controllers/pageControllers.js';
 
+const DB_URI = process.env.MONGODB_URI || 'mongodb://localhost/pcat-test-db';
 const uploadDir = 'public/uploads';
 
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 //Connect DB
-mongoose.connect('mongodb://localhost/pcat-test-db');
+mongoose.connect(DB_URI)
+  .then(() => console.log('DB Connected!'))
+  .catch(err => {
+    console.error('DB Connection Error:', err);
+});
 
 //Template Engine
 app.set("view engine", "ejs");

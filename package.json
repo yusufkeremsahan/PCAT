@@ -5,7 +5,7 @@
   "description": "PCAT Photo App",
   "main": "app.js",
   "scripts": {
-    "start":"node app.js",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,6 +28,8 @@
     "prettier": "3.6.2"
   },
   "dependencies": {
+    "cloudinary": "^2.8.0",
+    "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-fileupload": "^1.5.2",

@@ -2,20 +2,17 @@ import express, { urlencoded } from 'express';
 import ejs from 'ejs';
 import mongoose from 'mongoose';
 import fileUpload from 'express-fileupload';
-import fs from 'fs';
 import methodOverride from 'method-override';
 import photoController from './controllers/photoControllers.js'; 
 import pageController from './controllers/pageControllers.js';
+import fileUpload from 'express-fileupload';
+import dotenv from 'dotenv';
 
-const DB_URI = process.env.MONGODB_URL || 'mongodb://localhost/pcat-test-db';
-const uploadDir = 'public/uploads';
+dotenv.config();
 
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-}
-
-const port = process.env.PORT || 3000;
 const app = express();
+const port = process.env.PORT;
+const DB_URI = process.env.MONGODB_URL;
 
 //Connect DB
 mongoose.connect(DB_URI)
@@ -31,7 +28,10 @@ app.set("view engine", "ejs");
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(fileUpload());
+app.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: '/tmp/'
+}));
 app.use(methodOverride('_method', {
     methods: ['POST', 'GET']
 }));

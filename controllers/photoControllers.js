@@ -25,14 +25,15 @@ const getAllPhotos = async (req, res) => {
     res.render('index', { 
         photos,
         current: page,
-        pages: Math.ceil(totalPhotos/photoPerPage) 
+        pages: Math.ceil(totalPhotos/photoPerPage)
     });
 };
 
 const getPhoto = async (req, res) => {
     const photo = await Photo.findById(req.params.id);
     res.render('photo', {
-        photo
+        photo,
+        currentPage: 'none'
     });
 };
 

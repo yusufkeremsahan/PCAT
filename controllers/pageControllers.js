@@ -1,11 +1,11 @@
 import Photo from '../models/Photo.js';
 
 const getAboutPage = (req, res) => {
-    res.render('about');
+    res.render('about',{currentPage: 'about'});
 };
 
 const getAddPage = (req, res) => {
-    res.render('add');
+    res.render('add',{currentPage: 'add'});
 };
 
 const getEditPage = async (req, res) => {

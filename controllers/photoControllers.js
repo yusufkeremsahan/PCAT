@@ -1,7 +1,4 @@
 import Photo from '../models/Photo.js';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
-import path from 'path';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -14,8 +11,6 @@ cloudinary.config({
 });
 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const getAllPhotos = async (req, res) => {
     const page = req.query.page;
@@ -42,22 +37,18 @@ const getPhoto = async (req, res) => {
 
 const createPhoto = async (req, res) => {
   try {
-    const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
-      folder: 'picva_uploads'
-    });
+  console.log('Uploading to Cloudinary...');
+  console.log('Temp path:', req.files.image.tempFilePath);
 
-    await Photo.create({
-      title: req.body.title,
-      description: req.body.description,
-      image: result.secure_url,
-      public_id: result.public_id
-    });
+  const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
+    folder: 'picva_uploads'
+  });
 
-    res.redirect('/');
-  } catch (err) {
-    console.error('Error uploading image:', err);
-    res.status(500).send('Error uploading image');
-  }
+  console.log('Cloudinary upload result:', result);
+} catch (uploadErr) {
+  console.error('Cloudinary upload failed:', uploadErr);
+}
+
 };
 
 const updatePhoto = async (req, res) => {

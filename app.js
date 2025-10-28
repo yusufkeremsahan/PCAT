@@ -5,7 +5,6 @@ import fileUpload from 'express-fileupload';
 import methodOverride from 'method-override';
 import photoController from './controllers/photoControllers.js'; 
 import pageController from './controllers/pageControllers.js';
-import fileUpload from 'express-fileupload';
 import dotenv from 'dotenv';
 
 dotenv.config();

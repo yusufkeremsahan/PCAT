@@ -38,17 +38,22 @@ const getPhoto = async (req, res) => {
 
 const createPhoto = async (req, res) => {
   try {
-  console.log('Uploading to Cloudinary...');
-  console.log('Temp path:', req.files.image.tempFilePath);
+    const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
+      folder: 'picva_uploads'
+    });
 
-  const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
-    folder: 'picva_uploads'
-  });
+    await Photo.create({
+      title: req.body.title,
+      description: req.body.description,
+      image: result.secure_url,
+      public_id: result.public_id
+    });
 
-  console.log('Cloudinary upload result:', result);
-} catch (uploadErr) {
-  console.error('Cloudinary upload failed:', uploadErr);
-}
+    res.redirect('/');
+  } catch (err) {
+    console.error('Error uploading image:', err);
+    res.status(500).send('Error uploading image');
+  }
 
 };
 

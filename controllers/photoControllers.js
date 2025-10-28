@@ -25,7 +25,8 @@ const getAllPhotos = async (req, res) => {
     res.render('index', { 
         photos,
         current: page,
-        pages: Math.ceil(totalPhotos/photoPerPage)
+        pages: Math.ceil(totalPhotos/photoPerPage),
+        currentPage: 'index'
     });
 };
 

@@ -11,7 +11,8 @@ const getAddPage = (req, res) => {
 const getEditPage = async (req, res) => {
     const photo = await Photo.findById(req.params.id);
     res.render('edit', {
-        photo
+        photo,
+        currentPage: 'none'
     });
 };
 

@@ -1,6 +1,7 @@
 import Photo from '../models/Photo.js';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
+console.log('Cloudinary ENV check:', process.env.CLOUD_NAME, process.env.CLOUD_API_KEY, process.env.CLOUD_API_SECRET);
 dotenv.config();
 
 

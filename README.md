@@ -1,4 +1,4 @@
-# PCAT (PICVA)
+# PCAT (PICVAS)
 
 **PCAT (PICVA)** is a web application that allows users to upload images along with titles and descriptions. The project uses **MongoDB Atlas** for dynamic content management, enabling real-time updates and storage. Built with **Node.js, Express.js, EJS**, and following the **MVC design pattern**, this project allows open access for all users without any admin or authentication system.
 
@@ -23,7 +23,14 @@
 
 ---
 
-## 🛠️ Getting Started
+## 🌐 Live Demo
+
+You can try the project live here:  
+👉 **[https://picvas.onrender.com](https://picvas.onrender.com)**
+
+---
+
+## 🛠️ Getting Started (LOCAL)
 
 To run this project on your local machine, follow the steps below:
 
